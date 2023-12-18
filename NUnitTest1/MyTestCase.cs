@@ -11,8 +11,8 @@ namespace NUnitWebTest
         private IWebDriver? _webDriver;
 
         [SetUp]
-        public void Setup() 
-        { 
+        public void Setup()
+        {
             _webDriver = new ChromeDriver();
             _webDriver.Manage().Window.Maximize();
             _webDriver.Navigate().GoToUrl("https://my.life-pos.ru");
@@ -24,11 +24,13 @@ namespace NUnitWebTest
             var mainMenu = new MainMenuPageObject(_webDriver);
             var greetings = mainMenu.GoToAuthMenu().FindGreetings().Text;
 
-            bool dayCheck =     greetings.Contains("День")  && UsedFunctions.DayNightCheck().Contains("day");
-            bool nightCheck =   greetings.Contains("Вечер") && UsedFunctions.DayNightCheck().Contains("night");
+            bool morningCheck = UsedFunctions.TimeCheck(greetings, "Доброе утро", "morning");
+            bool dayCheck =     UsedFunctions.TimeCheck(greetings, "Добрый день", "day");
+            bool eveningCheck = UsedFunctions.TimeCheck(greetings, "Добрый вечер","evening");
+            bool nightCheck =   UsedFunctions.TimeCheck(greetings, "Доброй ночи", "night");
 
-            //одна из проверок должна пройти, вторая нет, так как сейчас либо день, либо ночь:
-            Assert.AreNotEqual(dayCheck && nightCheck, "Неверное отображение дня и ночи!");
+            //одна из проверок должна пройти:
+            Assert.IsTrue(morningCheck || dayCheck || eveningCheck || nightCheck);
 
         }
 
