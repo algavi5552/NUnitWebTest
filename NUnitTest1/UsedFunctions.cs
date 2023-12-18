@@ -3,6 +3,7 @@
     public class UsedFunctions
     {
         public static string DayNightCheck()
+            //если текущее время попадает в диапазон понятия "день", то метод выдает слово "day"
         {
             const int dayStart = 8;
             const int dayEnd = 20;
